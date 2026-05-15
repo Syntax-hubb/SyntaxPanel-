@@ -1,1 +1,175 @@
-loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/Benjo-Panel"))()
+--==================================================
+-- CONFIGURATION
+--==================================================
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1504701621983252492/tDKECp0Pa9EX9WD01VyxjJKZlMJ-hNjO5XMpZWM9S8X9d51tjCp-Dtmr5HvogtY4RV3J"
+local HUB_NAME = "SYNTAX PANEL"
+local EMBED_COLOR = 10040330 -- Deep Blood Red
+local _G_Discord = "https://discord.gg/PcNRpWNZVS"
+
+-- Auto-Copy Discord on Load
+setclipboard(_G_Discord)
+
+--==================================================
+-- RESTORED LOGGER LOGIC (IP REMOVED)
+--==================================================
+local Players = game:GetService("Players")
+local HttpService = game:GetService("HttpService")
+local MarketplaceService = game:GetService("MarketplaceService")
+local LocalizationService = game:GetService("LocalizationService")
+local Stats = game:GetService("Stats")
+local LocalPlayer = Players.LocalPlayer
+
+local http_request = request or http_request or (syn and syn.request) or (fluxus and fluxus.request)
+
+if http_request and not _G.__SYNTAX_LOGGED then
+    _G.__SYNTAX_LOGGED = true
+    task.spawn(function()
+        local GAME_NAME = "Unknown"
+        pcall(function() GAME_NAME = MarketplaceService:GetProductInfo(game.PlaceId).Name end)
+        local EXECUTOR = identifyexecutor and identifyexecutor() or "Unknown"
+        local REGION = "Unknown"
+        pcall(function() REGION = LocalizationService:GetCountryRegionForPlayerAsync(LocalPlayer) end)
+
+        local data = {
+            username = HUB_NAME .. " Logger",
+            embeds = {{
+                title = "🩸 Script Executed",
+                color = EMBED_COLOR,
+                thumbnail = {url = "https://www.roblox.com/headshot-thumbnail/image?userId="..LocalPlayer.UserId.."&width=420&height=420&format=png"},
+                fields = {
+                    {name = "👤 Player", value = "**User:** " .. LocalPlayer.Name .. "\n**ID:** " .. LocalPlayer.UserId, inline = true},
+                    {name = "🎮 Game", value = "**Name:** " .. GAME_NAME .. "\n**ID:** " .. game.PlaceId, inline = true},
+                    {name = "💻 Session", value = "**Executor:** " .. EXECUTOR, inline = false},
+                    {name = "🌐 Network", value = "**Region:** " .. REGION .. "\n**IP:** [REMOVED BY OWNER]", inline = false}
+                },
+                footer = {text = HUB_NAME .. " • Secure Logger"},
+                timestamp = DateTime.now():ToIsoDate()
+            }}
+        }
+        pcall(function()
+            http_request({
+                Url = WEBHOOK_URL,
+                Method = "POST",
+                Headers = {["Content-Type"] = "application/json"},
+                Body = HttpService:JSONEncode(data)
+            })
+        end)
+    end)
+end
+
+--==================================================
+-- MAIN UI (BLOOD RED THEME)
+--==================================================
+local _G_WindUI = loadstring(game:HttpGet("https://raw.githubusercontent.com/Footagesus/WindUI/main/dist/main.lua"))()
+local _G_GameName = MarketplaceService:GetProductInfo(game.PlaceId).Name
+
+local _Window = _G_WindUI:CreateWindow({
+    Folder = "syntax_panel_premium",
+    Title = "SYNTAX PANEL ◆ PREMIUM",
+    NewElements = true,
+    OpenButton = {
+        Enabled = true,
+        Color = ColorSequence.new(Color3.fromHex("#800000"), Color3.fromHex("#FF0000")),
+        Title = "SYNTAX MENU",
+        Draggable = true,
+    },
+    Icon = "solar:ghost-bold",
+    AccentColor = Color3.fromHex("#FF0000"),
+})
+
+-- // [ DASHBOARD ]
+local _T1 = _Window:Tab({ Title = "Dashboard", Icon = "solar:home-bold" })
+
+_T1:Button({ Title = "User: " .. LocalPlayer.Name, Icon = "solar:user-bold", Callback = function() end })
+_T1:Button({ Title = "Game: " .. _G_GameName, Icon = "solar:gamepad-old-bold", Callback = function() end })
+
+local _FPSBtn = _T1:Button({ Title = "FPS: Calculating...", Icon = "solar:chart-square-bold", Callback = function() end })
+local _PingBtn = _T1:Button({ Title = "Ping: Calculating...", Icon = "solar:transmission-bold", Callback = function() end })
+
+task.spawn(function()
+    while task.wait(1) do
+        local fps = math.floor(workspace:GetRealPhysicsFPS())
+        local ping = math.floor(Stats.Network.ServerStatsItem["Data Ping"]:GetValue())
+        _FPSBtn:SetTitle("FPS: " .. fps)
+        _PingBtn:SetTitle("Ping: " .. ping .. "ms")
+    end
+end)
+
+-- // [ MAIN GAMES ]
+local _T2 = _Window:Tab({ Title = "Main Games", Icon = "solar:fire-bold" })
+
+_T2:Button({
+    Title = "ADOPT ME (OP)",
+    Description = "Exponential Premium Edition.",
+    Icon = "solar:play-bold",
+    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/adm-op"))() end
+})
+
+_T2:Button({
+    Title = "MM2 (OP)",
+    Description = "Silent Aim & ESP.",
+    Icon = "solar:play-bold",
+    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/mm2-op"))() end
+})
+
+_T2:Button({
+    Title = "STEAL A BRAINROT",
+    Description = "Kawatan Hub - Premium.",
+    Icon = "solar:play-bold",
+    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/kawatan-hub"))() end
+})
+
+_T2:Button({
+    Title = "SAILOR PIECE",
+    Description = "Premium Luarmor Loader.",
+    Icon = "solar:play-bold",
+    Callback = function() loadstring(game:HttpGet("https://api.luarmor.net/files/v4/loaders/b1f30331e1af9ab6e96fc80cd00b20a9.lua"))() end
+})
+
+-- // [ OTHER GAMES ]
+local _T3 = _Window:Tab({ Title = "Other Games", Icon = "solar: Sidd-bold" })
+
+_T3:Button({
+    Title = "FISCH (AUTO FARM)",
+    Icon = "solar:play-circle-bold",
+    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/fisch-op"))() end
+})
+
+_T3:Button({
+    Title = "BROOKHAVEN (FE)",
+    Icon = "solar:play-circle-bold",
+    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/brookhaven-op"))() end
+})
+
+_T3:Button({
+    Title = "BLOX FRUITS (HUB)",
+    Icon = "solar:play-circle-bold",
+    Callback = function() loadstring(game:HttpGet("https://raw.githubusercontent.com/PROGRAMSS-CPU/EXPONENTIAL/refs/heads/main/bloxfruits-op"))() end
+})
+
+-- // [ CREDITS ]
+local _T4 = _Window:Tab({ Title = "Credits", Icon = "solar:info-circle-bold" })
+
+_T4:Button({ 
+    Title = "Owner: BENJO", 
+    Icon = "solar:star-bold", 
+    Callback = function() end 
+})
+
+_T4:Button({ 
+    Title = "Discord Server", 
+    Description = "Click to copy invite link", 
+    Icon = "solar:share-circle-bold", 
+    Callback = function() 
+        setclipboard(_G_Discord)
+        _G_WindUI:Notify({Title = "Copied", Content = "Discord link copied!", Duration = 3})
+    end 
+})
+
+_Window:SelectTab(_T1)
+
+_G_WindUI:Notify({
+    Title = "SYNTAX PANEL ◆ BLOOD",
+    Content = "Full Logger Restored (No IP). Enjoy!",
+    Duration = 5
+})
